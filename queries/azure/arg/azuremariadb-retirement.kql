@@ -1,0 +1,4 @@
+resources
+| where type =~ 'microsoft.dbformariadb/servers'
+| join kind=leftouter (resourcecontainers | where type =~ 'microsoft.resources/subscriptions' | project subscriptionName=name, subscriptionId) on subscriptionId
+| project name, resourceGroup, subscriptionId, subscriptionName
