@@ -1,0 +1,13 @@
+// retired on June 15, 2025
+resources
+| where type =~ 'microsoft.web/connections'
+| where properties.api.displayName =~ 'HTTP with Microsoft Entra ID (preauthorized)'
+| project resourceGroup=tolower(resourceGroup), subscriptionId
+| join kind=inner ( 
+   resources
+   | where type =~ 'microsoft.logic/workflows'
+   | where isnotempty(properties.parameters.['$connections'].value.['webcontents'])
+   | project logicApp=name, resourceGroup=tolower(resourceGroup), subscriptionId
+) on resourceGroup, subscriptionId
+| join kind=leftouter (resourcecontainers | where type == 'microsoft.resources/subscriptions' | project subscription=name, subscriptionId) on subscriptionId
+| distinct logicApp, resourceGroup, subscription
