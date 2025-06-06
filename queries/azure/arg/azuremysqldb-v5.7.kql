@@ -1,0 +1,4 @@
+resources
+| where type =~ "microsoft.dbformysql/flexibleservers"
+| project name, resourceGroup, subscriptionId, mySqlVersion=properties.version, state=properties.state
+| where mySqlVersion == '5.7'
