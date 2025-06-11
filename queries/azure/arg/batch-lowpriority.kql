@@ -1,0 +1,3 @@
+// open Resource Graph Explorer in the Azure Portal an execute this query
+resources
+| where type =~ 'microsoft.batch/batchaccounts' and properties.poolAllocationMode == 'BatchService'
